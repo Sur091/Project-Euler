@@ -1,0 +1,36 @@
+# Project Euler 88
+
+
+def product(lst):
+    p = 1
+    for a in lst: p *= a
+    return p
+
+
+# Brute force
+# Make all possible combinations of products, save min value in a list.
+
+
+def do_it(n, depth, lst, last, answer):
+    a, k = 2, n + product(lst) - sum(lst)
+    while k <= N and a <= last:  # Loop until either k is bigger than 12000 or symmetry is broken.
+        if depth == n:  # After reaching the deepest recursion save the smaller value.
+            if answers[k - 1] > product(lst):
+                answers[k - 1] = product(lst)
+        else:  # Go to the next depth if not at the end.
+            do_it(n, depth + 1, list(lst), a, answer)
+        a += 1
+        lst[depth - 1] = a
+        k = n + product(lst) - sum(lst)
+
+
+N = 12000
+answers = [float("inf")] * N
+answers[0] = 0  # No answer for k = 1
+
+# Finding products with 2,3,4...,13 factors. 2**14 > 12000
+for no_of_factors in range(2, 14):
+    do_it(no_of_factors, 1, [2] * no_of_factors, N + 1, answers)
+
+# No repeats
+print(sum(set(answers)))
