@@ -1,0 +1,25 @@
+def point_generator(num):
+    mod = 50515093
+    s0 = 290797
+    s1 = (s0 ** 2) % mod
+    lst = []
+    for a in range(num):
+        lst.append((s0, s1))
+        s0 = (s1 ** 2) % mod
+        s1 = (s0 ** 2) % mod
+    return lst
+
+num = 2_000_000
+lst = point_generator(num)
+lst.sort(key=lambda x: x[0])
+min = float('inf')
+
+for i, p in enumerate(lst):
+    j = i + 1
+    while j < num and abs(lst[j][0] - p[0]) < min:
+        dist = (p[0]-lst[j][0]) ** 2 + (p[1]-lst[j][1])**2
+        if dist < min:
+            min = dist
+        j+=1
+
+print(min ** 0.5)
