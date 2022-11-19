@@ -1,0 +1,33 @@
+import numpy as np 
+
+def primes_squares(num):
+    l_ = int(num - 1) // 2
+    pri = np.full(l_,True, bool)
+
+    for a in range(int(num ** 0.5) // 2+1):
+        if pri[a]:
+            pri[2*a*a + 6*a + 3:: 2*a + 3] = False
+    
+    return [4] + [(2*i+3) ** 2 for i, a in enumerate(pri) if a]
+
+
+def reversible(num, lst):
+    reverse_num = int(''.join(reversed(str(num))))
+    if num == reverse_num: return False
+    if reverse_num not in lst1: return False
+    return True
+
+
+number = 100_000_000
+lst = primes_squares(number)
+lst1 = set(lst)
+lst0 = []
+
+for prime_square in lst:
+    if reversible(prime_square, lst):
+        lst0.append(prime_square)
+        if len(lst0) == 50: break
+else:
+    print("not enough prime squares")
+    print(lst0)
+print(sum(lst0))
