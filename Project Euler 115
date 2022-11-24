@@ -1,0 +1,13 @@
+dictionary = {-1:1, 0:1, 1:1, 2:1}
+m, n = 50, 169
+for a in range(2, m):
+    dictionary[a] = 1
+for a in range(m, n+1):
+    dictionary[a] = 2
+for a in range(3, n+1):
+    for b in range(m, a):
+        dictionary[a] += sum(dictionary[a-b-1-c] for c in range(a-b+1))
+    if dictionary[a] > 10 **6:
+        print(a-1, dictionary[a-1])
+        print(a, dictionary[a])
+        break
