@@ -1,0 +1,31 @@
+import numpy as np
+
+
+def primes(n):
+    l_ = int(n-1) // 2
+    pri = np.full(l_, True, bool)
+
+    for a in range(int(n ** 0.5 - 1) // 2 + 1):
+        if pri[a]:
+            pri[2*a*a + 6*a + 3:: 2*a + 3] = False
+
+    yield 2
+    yield from (2*i + 3 for i, a in enumerate(pri) if a)
+
+
+number = pow(10, 8)
+list_of_primes = list(primes(number))
+powers_of_primes = []
+
+for i, prime in enumerate(list_of_primes):
+    powers_of_primes.append(number//prime)
+    power = prime * prime
+    while power <= number:
+        powers_of_primes[i] += number // power
+        power *= prime
+
+total = 1
+for power, prime in zip(powers_of_primes, list_of_primes):
+    total += (total * pow(prime, 2*power, pow(10, 9) + 9)) % (10**9+9)
+
+print(total % (pow(10, 9)+9))
