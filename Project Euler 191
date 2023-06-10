@@ -1,0 +1,13 @@
+answers_list = {0: 1, 1: 2, 2: 4, 3:7}
+
+def find(length):
+    if length in answers_list: return answers_list[length]
+    k = find(length-1) + find(length-2) + find(length-3);
+    answers_list[length] = k
+    return k
+
+n = 30
+sum = find(n)
+for i in range(n):
+    sum += find(i) * find(n-i-1)
+print(sum)
