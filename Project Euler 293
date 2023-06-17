@@ -1,0 +1,46 @@
+primes = [2, 3, 5, 7, 11, 13, 17, 19, 23]
+
+def admissible_num_below(lst, n, k=0):
+    lst_ = []
+    if (k >= len(primes)): return []
+    for a in lst:
+        product = a*primes[k]
+        while product <= n:
+            lst_.append(product)
+            product *= primes[k]
+    return lst  + admissible_num_below(lst_, n, k+1)
+
+
+def miller_rabin(n):
+    if n in {2, 3, 5, 7, 11}: return True
+    if n % 2 == 0: return False
+    if n < 13: return False
+
+    s, d = 0, n-1
+    while d % 2 == 0:
+        s += 1
+        d //= 2
+    for a in [2, 3, 5, 7, 11]:
+        x = pow(a, d, n)
+        y = x*x % n
+        for _ in range(s):
+            y = x*x % n
+            if y == 1 and x != 1 and x != n - 1: # nontrivial square root of 1 modulo n
+                return False # return "composite"
+            x = y
+        if y != 1:
+            return False # return “composite”
+    return True # return “probably prime” definitely prime for n < 2,152,302,898,747 (2 trillion)
+
+n = 10 ** 9
+answers = set()
+
+for admissible_num in admissible_num_below([1], n)[2:]:
+    m = 3
+    #print(admissible_num)
+    while not miller_rabin(m + admissible_num): 
+        m += 2
+    #print(admissible_num, m, admissible_num + m)
+    answers.add(m)
+
+print(sum(answers))
